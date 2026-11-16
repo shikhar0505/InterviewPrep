@@ -1,29 +1,30 @@
 package org.shikhar.dropwizard.db;
 
-import java.util.List;
-import java.util.Optional;
+import com.hubspot.rosetta.jdbi3.BindWithRosetta;
 import org.jdbi.v3.sqlobject.customizer.Bind;
-import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.shikhar.dropwizard.api.Employee;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface EmployeeDAO {
-  @SqlQuery("SELECT * FROM employees WHERE id = :id")
+  @SqlQuery("SELECT id, first_name, last_name, email FROM employees WHERE id = :id")
   Optional<Employee> findById(@Bind("id") int id);
 
-  @SqlQuery("SELECT * FROM employees")
+  @SqlQuery("SELECT id, first_name, last_name, email FROM employees")
   List<Employee> findAll();
 
   @SqlUpdate(
-      "INSERT INTO employees (firstName, lastName, email) VALUES (:firstName, :lastName, :email)")
+      "INSERT INTO employees (first_name, last_name, email) VALUES (:first_name, :last_name, :email)")
   @GetGeneratedKeys
-  int insert(@BindBean Employee person);
+  int insert(@BindWithRosetta Employee person);
 
   @SqlUpdate(
-      "UPDATE employees SET firstName = :firstName, lastName = :lastName, email = :email WHERE id = :id")
-  int update(@BindBean Employee person);
+      "UPDATE employees SET first_name = :first_name, last_name = :last_name, email = :email WHERE id = :id")
+  int update(@BindWithRosetta Employee person);
 
   @SqlUpdate("DELETE FROM employees WHERE id = :id")
   int delete(@Bind("id") int id);

@@ -1,21 +1,28 @@
 package org.shikhar.dropwizard.api;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.hubspot.rosetta.annotations.RosettaNaming;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.immutables.value.Value;
 
+import java.util.Optional;
+
 @Value.Immutable
+@JsonDeserialize(as = ImmutableEmployee.class)
+@RosettaNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public interface Employee {
 
-  public int getId();
+  Optional<Integer> getId();
 
   @Length(min = 2, max = 45)
-  public String getFirstName();
+  String getFirstName();
 
   @Length(min = 2, max = 45)
-  public String getLastName();
+  String getLastName();
 
   @Pattern(regexp = ".+@.+\\.[a-z]+")
   @Value.Redacted
-  public String getEmail();
+  String getEmail();
 }

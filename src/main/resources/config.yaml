@@ -4,14 +4,19 @@ server:
     - type: http
       port: 8080
 
+logging:
+  loggers:
+    "io.dropwizard.jersey.jackson": DEBUG
+
 database:
-  driverClass: com.mysql.cj.jdbc.Driver
-  user: root
-  password: your_password
-  url: jdbc:mysql://localhost:3306/interviewprep
-  properties:
-    charSet: UTF-8
-  maxWaitForConnection: 1s
-  validationQuery: "SELECT 1"
+  driverClass: org.postgresql.Driver
+  user: interviewprep
+  password: dev_password
+  url: jdbc:postgresql://localhost:5432/interviewprep
+
+  initialSize: 1
   minSize: 1
   maxSize: 8
+
+  maxWaitForConnection: 1s
+  validationQuery: "SELECT 1"
