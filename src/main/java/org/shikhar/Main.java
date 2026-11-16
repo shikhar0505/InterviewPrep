@@ -8,6 +8,9 @@ import com.google.inject.Injector;
 import com.hubspot.rosetta.Rosetta;
 import com.hubspot.rosetta.jdbi3.RosettaObjectMapper;
 import com.hubspot.rosetta.jdbi3.RosettaRowMapperFactory;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.core.Application;
 import io.dropwizard.core.setup.Bootstrap;
@@ -17,6 +20,8 @@ import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import org.jdbi.v3.core.Jdbi;
 import org.shikhar.dropwizard.EmployeeModule;
+import org.shikhar.dropwizard.auth.OAuthAuthenticator;
+import org.shikhar.dropwizard.auth.UserPrincipal;
 import org.shikhar.dropwizard.resources.EmployeeResource;
 import org.shikhar.dropwizard.resources.PingResource;
 
@@ -42,24 +47,38 @@ public class Main extends Application<AppConfiguration> {
 
   @Override
   public void run(AppConfiguration appConfiguration, Environment environment) throws Exception {
-    // Initialize Dropwizard-managed JDBI
+    // 1. Configure Rosetta ObjectMapper & share it with Dropwizard
+    ObjectMapper rosettaMapper =
+        Rosetta.getMapper()
+            .copy()
+            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+            .enable(MapperFeature.ALLOW_EXPLICIT_PROPERTY_RENAMING);
+
+    Rosetta.getMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    environment.getObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+
+    // 2. Initialize Dropwizard-managed JDBI
     Jdbi jdbi =
         new JdbiFactory().build(environment, appConfiguration.getDataSourceFactory(), "postgresql");
+    jdbi.getConfig(RosettaObjectMapper.class).setObjectMapper(rosettaMapper);
+    jdbi.registerRowMapper(new RosettaRowMapperFactory());
 
-      Rosetta.getMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-      jdbi.registerRowMapper(new RosettaRowMapperFactory());
-
-      ObjectMapper rosettaMapper = Rosetta.getMapper()
-              .copy()
-              .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-              .enable(MapperFeature.ALLOW_EXPLICIT_PROPERTY_RENAMING);
-      jdbi.getConfig(RosettaObjectMapper.class).setObjectMapper(rosettaMapper);
-      jdbi.registerRowMapper(new RosettaRowMapperFactory());
-
-    // Initialize Guice
+    // 3. Initialize Guice
     Injector injector = Guice.createInjector(new EmployeeModule(jdbi, environment.getValidator()));
 
-    // Register Guice-created resources with Jersey
+    // 4. Register OAuth Bearer Auth Filter
+    OAuthAuthenticator authenticator = injector.getInstance(OAuthAuthenticator.class);
+    environment
+        .jersey()
+        .register(
+            new AuthDynamicFeature(
+                new OAuthCredentialAuthFilter.Builder<UserPrincipal>()
+                    .setAuthenticator(authenticator)
+                    .setPrefix("Bearer")
+                    .buildAuthFilter()));
+    environment.jersey().register(new AuthValueFactoryProvider.Binder<>(UserPrincipal.class));
+
+    // 5. Register Guice-created resources (PingResource stays public without @Auth)
     environment.jersey().register(injector.getInstance(PingResource.class));
     environment.jersey().register(injector.getInstance(EmployeeResource.class));
   }

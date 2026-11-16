@@ -1,6 +1,7 @@
 package org.shikhar.dropwizard.resources;
 
 import com.google.inject.Inject;
+import io.dropwizard.auth.Auth;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.shikhar.dropwizard.api.Employee;
 import org.shikhar.dropwizard.api.ImmutableEmployee;
+import org.shikhar.dropwizard.auth.UserPrincipal;
 import org.shikhar.dropwizard.core.EmployeeManager;
 
 @Path("employees")
@@ -28,8 +30,11 @@ public class EmployeeResource {
   }
 
   @GET
-  public Response getAllEmployees() {
-    return Response.ok(employeeService.getAllEmployees()).build();
+  public Response getAllEmployees(
+      @Auth UserPrincipal principal,
+      @QueryParam("cursor") Optional<String> cursor,
+      @QueryParam("limit") @DefaultValue("20") int limit) {
+    return Response.ok(employeeService.getEmployees(cursor, limit)).build();
   }
 
   @GET

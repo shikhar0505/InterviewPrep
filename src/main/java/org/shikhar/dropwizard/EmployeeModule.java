@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import jakarta.validation.Validator;
 import org.jdbi.v3.core.Jdbi;
+import org.shikhar.dropwizard.auth.OAuthAuthenticator;
 import org.shikhar.dropwizard.db.EmployeeDAO;
 
 public class EmployeeModule extends AbstractModule {
@@ -20,6 +21,7 @@ public class EmployeeModule extends AbstractModule {
   protected void configure() {
     bind(Jdbi.class).toInstance(jdbi);
     bind(Validator.class).toInstance(validator);
+    bind(OAuthAuthenticator.class).in(Singleton.class);
   }
 
   @Provides

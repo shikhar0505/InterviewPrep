@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hubspot.rosetta.annotations.RosettaNaming;
 import jakarta.validation.constraints.Pattern;
+import java.util.Optional;
 import org.hibernate.validator.constraints.Length;
 import org.immutables.value.Value;
-
-import java.util.Optional;
 
 @Value.Immutable
 @JsonDeserialize(as = ImmutableEmployee.class)
