@@ -7,15 +7,15 @@ import org.immutables.value.Value;
 @Value.Immutable
 public interface Employee {
 
-    public String getEmployeeId();
+  public int getId();
 
-    @Length(min = 2, max = 45)
-    public String getFirstName();
+  @Length(min = 2, max = 45)
+  public String getFirstName();
 
-    @Length(min = 2, max = 45)
-    public String getLastName();
+  @Length(min = 2, max = 45)
+  public String getLastName();
 
-    @Pattern(regexp = ".+@.+\\.[a-z]+")
-    @Value.Redacted
-    public String getEmail();
+  @Pattern(regexp = ".+@.+\\.[a-z]+")
+  @Value.Redacted
+  public String getEmail();
 }

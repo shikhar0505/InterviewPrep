@@ -7,7 +7,8 @@ import jakarta.ws.rs.core.Response;
 @Path("ping")
 public class PingResource {
 
-    @GET public Response ping() {
-        return Response.ok("Hello World!").build();
-    }
+  @GET
+  public Response ping() {
+    return Response.ok("Hello World!").build();
+  }
 }
