@@ -2,17 +2,20 @@ package org.shikhar.dropwizard.core;
 
 import com.google.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
 import org.shikhar.dropwizard.api.Employee;
 import org.shikhar.dropwizard.api.EmployeePage;
 import org.shikhar.dropwizard.api.ImmutableEmployee;
 import org.shikhar.dropwizard.api.ImmutableEmployeePage;
 import org.shikhar.dropwizard.db.EmployeeDAO;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+
 public class EmployeeManager {
+    private static final int PAGE_SIZE = 2;
+
   private final EmployeeDAO employeeDAO;
 
   @Inject
@@ -20,8 +23,8 @@ public class EmployeeManager {
     this.employeeDAO = employeeDAO;
   }
 
-  public EmployeePage getEmployees(Optional<String> cursor, int limit) {
-    int safeLimit = Math.min(Math.max(limit, 1), 100);
+  public EmployeePage getEmployees(Optional<String> cursor) {
+    int safeLimit = Math.max(PAGE_SIZE, 1);
     int afterId = cursor.map(this::decodeCursor).orElse(0);
 
     // Fetch 1 extra row to check if a next page exists

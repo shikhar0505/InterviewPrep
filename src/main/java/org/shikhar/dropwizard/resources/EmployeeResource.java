@@ -7,14 +7,15 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import org.shikhar.dropwizard.api.Employee;
 import org.shikhar.dropwizard.api.ImmutableEmployee;
 import org.shikhar.dropwizard.auth.UserPrincipal;
 import org.shikhar.dropwizard.core.EmployeeManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Path("employees")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,9 +33,8 @@ public class EmployeeResource {
   @GET
   public Response getAllEmployees(
       @Auth UserPrincipal principal,
-      @QueryParam("cursor") Optional<String> cursor,
-      @QueryParam("limit") @DefaultValue("20") int limit) {
-    return Response.ok(employeeService.getEmployees(cursor, limit)).build();
+      @QueryParam("cursor") Optional<String> cursor) {
+    return Response.ok(employeeService.getEmployees(cursor)).build();
   }
 
   @GET
