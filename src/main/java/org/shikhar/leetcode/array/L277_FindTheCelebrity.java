@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.array;
+package org.shikhar.leetcode.array;
 
 /**
  * https://leetcode.com/problems/find-the-celebrity/description/

@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.stocks;
+package org.shikhar.leetcode.stocks;
 
 import java.util.HashMap;
 import java.util.Map;

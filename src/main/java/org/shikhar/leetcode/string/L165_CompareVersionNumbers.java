@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.string;
+package org.shikhar.leetcode.string;
 
 /**
  * https://leetcode.com/problems/compare-version-numbers/description/

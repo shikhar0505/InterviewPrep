@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.palindrome;
+package org.shikhar.leetcode.palindrome;
 
 /**
  * https://leetcode.com/problems/palindrome-linked-list/description/

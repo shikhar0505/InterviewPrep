@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.palindrome;
+package org.shikhar.leetcode.palindrome;
 
 /**
  * https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/description/

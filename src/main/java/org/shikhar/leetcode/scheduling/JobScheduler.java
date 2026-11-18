@@ -1,11 +1,6 @@
-package com.shikhar.interviewprep.scheduling;
+package org.shikhar.leetcode.scheduling;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // https://www.hellointerview.com/community/questions/job-scheduling-implementation/cm6k0flr7000nyis4gwnbys17

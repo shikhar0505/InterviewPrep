@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.parenthesis;
+package org.shikhar.leetcode.parenthesis;
 
 /**
  * https://leetcode.com/problems/valid-parenthesis-string/description

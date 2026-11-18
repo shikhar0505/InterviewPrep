@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.parenthesis;
+package org.shikhar.leetcode.parenthesis;
 
 import java.util.Stack;
 

@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep;
+package org.shikhar.leetcode;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.stocks;
+package org.shikhar.leetcode.stocks;
 
 /**
  * https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/

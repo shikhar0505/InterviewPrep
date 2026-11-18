@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.array;
+package org.shikhar.leetcode.array;
 
 /**
  * https://leetcode.com/problems/longest-strictly-increasing-or-strictly-decreasing-subarray/description/

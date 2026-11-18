@@ -1,4 +1,4 @@
-package com.shikhar.interviewprep.array;
+package org.shikhar.leetcode.array;
 
 import java.util.LinkedList;
 import java.util.List;
